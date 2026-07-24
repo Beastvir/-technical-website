@@ -395,7 +395,14 @@
 
   return (
     <div className="tc-root">
-      
+      <style>{`
+        :root{
+          --navy-deep:${COLORS.navyDeep}; --navy:${COLORS.navy}; --blue:${COLORS.blue};
+          --blue-bright:${COLORS.blueBright}; --ice:${COLORS.ice}; --amber:${COLORS.amber};
+          --paper:${COLORS.paper}; --line:${COLORS.line}; --maxw:1200px;
+        }
+        
+      `}</style>
 {console.log("hello")}
       <div className="grid-bg" />
 
@@ -426,7 +433,8 @@
       <div className={`mobile-panel ${menuOpen ? "open" : ""}`}>
         <a href="#blades" onClick={() => setMenuOpen(false)}>What We Do</a>
         <a href="#events" onClick={() => setMenuOpen(false)}>Events</a>
-        <a href="#gallery" onClick={() => setMenuOpen(false)}>Gallery</a>
+        
+         <Link to={"/gallery"} onClick={() => setMenuOpen(false)}>gallery</Link>
         <a href="#team" onClick={() => setMenuOpen(false)}>Team</a>
         <a href="#join" onClick={() => setMenuOpen(false)}>Join</a>
       </div>
