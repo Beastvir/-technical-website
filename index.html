@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Technical Club — Engineering in Motion</title>
+<meta name="description" content="Technical Club — a student engineering collective spanning hardware, software and research.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Baloo+2:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-deep:#071522;
+    --navy:#0a1f35;
+    --panel:#0f2a45;
+    --panel-hi:#123354;
+    --blue:#2f72be;
+    --blue-light:#7fb0e6;
+    --ice:#eaf2f8;
+    --ice-dim:#a9bdd0;
+    --copper:#e8935c;
+    --copper-hi:#f3ab7c;
+    --grid-line:rgba(127,176,230,0.10);
+    --steel:#3d5670;
+    --radius:6px;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--navy);
+    color:var(--ice);
+    font-family:'IBM Plex Sans', sans-serif;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--copper); color:var(--navy-deep);}
+
+  h1,h2,h3{ font-family:'Syne', sans-serif; letter-spacing:-0.01em; line-height:1.05;}
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+  a{color:inherit; text-decoration:none;}
+
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color:var(--copper);
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{
+    content:""; width:22px; height:1px; background:var(--copper); display:inline-block;
+  }
+
+  .wrap{ max-width:1240px; margin:0 auto; padding:0 32px; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; }
+  }
+
+  /* ---------- blueprint grid backdrop ---------- */
+  .blueprint-bg{
+    position:absolute; inset:0; z-index:0; pointer-events:none;
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size:42px 42px;
+    mask-image:radial-gradient(ellipse at 60% 30%, black 45%, transparent 85%);
+  }
+
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(7,21,34,0.82);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--grid-line);
+  }
+  nav.wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    height:78px;
+  }
+  .brand{ display:flex; align-items:center; gap:14px; }
+  .brand img{ height:42px; width:42px; }
+  .brand span{ font-family:'Syne',sans-serif; font-weight:700; font-size:1.05rem; letter-spacing:0.02em; }
+  .brand small{ display:block; font-family:'IBM Plex Mono',monospace; font-size:0.6rem; color:var(--ice-dim); letter-spacing:0.14em; }
+
+  .navlinks{ display:flex; align-items:center; gap:38px; }
+  .navlinks a{
+    position:relative; font-size:0.86rem; color:var(--ice-dim); font-weight:500;
+    padding:6px 0;
+  }
+  .navlinks a::after{
+    content:""; position:absolute; left:0; bottom:0; height:1px; width:0;
+    background:var(--copper); transition:width 0.3s ease;
+  }
+  .navlinks a:hover{ color:var(--ice); }
+  .navlinks a:hover::after{ width:100%; }
+
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:'IBM Plex Mono', monospace; font-size:0.78rem; letter-spacing:0.06em;
+    padding:12px 22px; border-radius:3px; cursor:pointer;
+    text-transform:uppercase; border:1px solid transparent;
+  }
+  .btn-primary{ background:var(--copper); color:var(--navy-deep); font-weight:500; }
+  .btn-primary:hover{ background:var(--copper-hi); }
+  .btn-primary .gear{ transition:transform 0.6s ease; }
+  .btn-primary:hover .gear{ transform:rotate(120deg); }
+  .btn-outline{ border-color:var(--steel); color:var(--ice); }
+  .btn-outline:hover{ border-color:var(--blue-light); color:var(--blue-light); }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:92vh;
+    display:flex; align-items:center;
+    overflow:hidden;
+  }
+  .hero .wrap{
+    display:grid; grid-template-columns:1.05fr 0.95fr; gap:40px; align-items:center;
+    width:100%; position:relative; z-index:2;
+  }
+  .hero h1{
+    font-size:clamp(2.6rem, 5.4vw, 4.4rem);
+    font-weight:800; text-transform:uppercase; margin:18px 0 22px;
+    color:var(--ice);
+  }
+  .hero h1 em{ font-style:normal; color:var(--blue-light); }
+  .hero p.lede{ color:var(--ice-dim); font-size:1.05rem; max-width:480px; line-height:1.65; margin-bottom:34px;}
+  .hero-cta{ display:flex; gap:16px; flex-wrap:wrap; }
+
+  .scanline{
+    position:absolute; left:0; right:0; height:140px;
+    background:linear-gradient(180deg, transparent, rgba(127,176,230,0.06), transparent);
+    animation:scan 9s linear infinite; z-index:1;
+  }
+  @keyframes scan{ 0%{ top:-140px; } 100%{ top:100%; } }
+
+  /* Turbine / triskelion */
+  .rig{ position:relative; width:100%; aspect-ratio:1/1; max-width:480px; margin:0 auto; }
+  .rig svg{ width:100%; height:100%; overflow:visible; }
+  .rotor{
+    transform-origin:250px 250px;
+    animation:spin 46s linear infinite;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  .blade{ fill:url(#bladeGrad); stroke:var(--blue-light); stroke-width:1.4; }
+  .blade.b2{ fill:url(#bladeGrad2); opacity:0.92; }
+  .blade.b3{ fill:url(#bladeGrad3); opacity:0.85; }
+  .hub{ fill:var(--navy); stroke:var(--blue-light); stroke-width:2; }
+  .ring{ fill:none; stroke:var(--steel); stroke-width:1; stroke-dasharray:2 6; opacity:0.5; }
+
+  .leader{ stroke:var(--steel); stroke-width:1; fill:none; stroke-dasharray:220; stroke-dashoffset:220; animation:draw 1.6s ease forwards; }
+  .leader.d1{ animation-delay:0.5s; } .leader.d2{ animation-delay:0.8s; } .leader.d3{ animation-delay:1.1s; }
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+  .callout{ font-family:'IBM Plex Mono',monospace; font-size:11px; fill:var(--ice-dim); letter-spacing:0.04em; opacity:0; animation:fadeIn 0.6s ease forwards; }
+  .callout.d1{ animation-delay:1.4s; } .callout.d2{ animation-delay:1.7s; } .callout.d3{ animation-delay:2.0s; }
+  @keyframes fadeIn{ to{ opacity:1; } }
+  .callout tspan.tag{ fill:var(--copper); }
+
+  /* ---------- STAT STRIP ---------- */
+  .stats{
+    border-top:1px solid var(--grid-line); border-bottom:1px solid var(--grid-line);
+    background:var(--navy-deep);
+  }
+  .stats .wrap{
+    display:grid; grid-template-columns:repeat(4,1fr);
+  }
+  .stat{ padding:34px 24px; border-left:1px solid var(--grid-line); position:relative; }
+  .stat:first-child{ border-left:none; }
+  .stat .tick{ position:absolute; top:0; left:0; width:1px; height:8px; background:var(--copper); }
+  .stat .num{ font-family:'Syne',sans-serif; font-weight:800; font-size:2.1rem; color:var(--ice); }
+  .stat .num::after{ content: attr(data-suffix); }
+  .stat .label{ font-family:'IBM Plex Mono',monospace; font-size:0.68rem; letter-spacing:0.12em; color:var(--ice-dim); text-transform:uppercase; margin-top:6px; display:block;}
+
+  /* ---------- SECTION generic ---------- */
+  section{ position:relative; padding:120px 0; }
+  .section-head{ max-width:640px; margin-bottom:60px; }
+  .section-head h2{ font-size:clamp(1.9rem,3.4vw,2.8rem); text-transform:uppercase; margin-top:16px; }
+  .section-head p{ color:var(--ice-dim); margin-top:18px; line-height:1.7; font-size:1rem; max-width:560px; }
+
+  .reveal{ opacity:0; transform:translateY(26px); transition:opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.in-view{ opacity:1; transform:translateY(0); }
+
+  /* ---------- ABOUT / exploded diagram ---------- */
+  .about .wrap{ display:grid; grid-template-columns:0.9fr 1.1fr; gap:70px; align-items:center; }
+  .exploded{ position:relative; }
+  .exploded svg{ width:100%; height:auto; }
+  .about-copy .part{ display:flex; gap:16px; padding:18px 0; border-top:1px solid var(--grid-line); }
+  .about-copy .part:last-child{ border-bottom:1px solid var(--grid-line); }
+  .about-copy .part .idx{ font-family:'IBM Plex Mono',monospace; color:var(--copper); font-size:0.85rem; padding-top:2px;}
+  .about-copy .part h3{ font-size:1.05rem; text-transform:uppercase; margin-bottom:6px; }
+  .about-copy .part p{ color:var(--ice-dim); font-size:0.92rem; line-height:1.6; }
+
+  /* ---------- DOMAINS ---------- */
+  .domains-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:22px; }
+  .domain-card{
+    background:var(--panel); border:1px solid var(--grid-line); border-radius:var(--radius);
+    padding:30px 24px; position:relative; overflow:hidden;
+    transition:transform 0.45s cubic-bezier(.2,.8,.2,1), border-color 0.3s ease, background 0.3s ease;
+  }
+  .domain-card::before{
+    content:""; position:absolute; top:-40px; right:-40px; width:120px; height:120px;
+    background:var(--blue); opacity:0.08; border-radius:50%;
+    transition:transform 0.5s ease;
+  }
+  .domain-card:hover{ transform:translateY(-8px) rotate(-1.2deg); border-color:var(--blue-light); background:var(--panel-hi); }
+  .domain-card:hover::before{ transform:scale(1.5); }
+  .domain-card .tag{ font-family:'IBM Plex Mono',monospace; font-size:0.68rem; color:var(--ice-dim); letter-spacing:0.1em; }
+  .domain-card h3{ font-size:1.15rem; text-transform:uppercase; margin:14px 0 10px; }
+  .domain-card p{ color:var(--ice-dim); font-size:0.86rem; line-height:1.6; }
+  .domain-card svg{ width:34px; height:34px; margin-bottom:6px; }
+  .domain-card svg .cog{ transform-origin:center; transition:transform 0.6s ease; }
+  .domain-card:hover svg .cog{ transform:rotate(50deg); }
+
+  /* ---------- EVENTS ---------- */
+  .events-top{ display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap; }
+  .event-feature{
+    margin-top:44px; display:grid; grid-template-columns:0.5fr 1fr; gap:0;
+    border:1px solid var(--grid-line); border-radius:var(--radius); overflow:hidden; background:var(--panel);
+  }
+  .event-feature .date-block{ background:var(--blue); color:var(--navy-deep); padding:34px 28px; display:flex; flex-direction:column; justify-content:center; }
+  .event-feature .date-block .day{ font-family:'Syne',sans-serif; font-weight:800; font-size:3rem; line-height:1; }
+  .event-feature .date-block .mon{ font-family:'IBM Plex Mono',monospace; letter-spacing:0.14em; margin-top:6px; }
+  .event-feature .info{ padding:34px 36px; }
+  .event-feature .info .tag{ font-family:'IBM Plex Mono',monospace; font-size:0.7rem; color:var(--copper); letter-spacing:0.1em; }
+  .event-feature .info h3{ font-size:1.4rem; text-transform:uppercase; margin:10px 0 12px; }
+  .event-feature .info p{ color:var(--ice-dim); line-height:1.7; max-width:560px; }
+
+  .past-events{ margin-top:26px; display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+  .past-card{
+    border-top:1px solid var(--grid-line); padding:20px 4px; position:relative;
+  }
+  .past-card .num{ font-family:'IBM Plex Mono',monospace; color:var(--steel); font-size:0.75rem; }
+  .past-card h4{ font-family:'Syne',sans-serif; font-size:1rem; text-transform:uppercase; margin:10px 0 6px; }
+  .past-card p{ color:var(--ice-dim); font-size:0.85rem; }
+
+  /* ---------- PROJECTS ---------- */
+  .proj-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+  .proj-card{
+    background:var(--panel); border:1px solid var(--grid-line); border-radius:var(--radius);
+    padding:26px; transition:transform 0.4s ease, border-color 0.3s ease;
+  }
+  .proj-card:hover{ transform:translateY(-6px); border-color:var(--copper); }
+  .proj-card .spec{ display:flex; justify-content:space-between; font-family:'IBM Plex Mono',monospace; font-size:0.65rem; color:var(--ice-dim); letter-spacing:0.08em; margin-bottom:16px; }
+  .proj-card h3{ font-size:1.1rem; text-transform:uppercase; margin-bottom:10px; }
+  .proj-card p{ color:var(--ice-dim); font-size:0.87rem; line-height:1.6; margin-bottom:18px; }
+  .proj-card .stack{ display:flex; gap:8px; flex-wrap:wrap; }
+  .proj-card .stack span{ font-family:'IBM Plex Mono',monospace; font-size:0.65rem; border:1px solid var(--steel); padding:4px 8px; border-radius:20px; color:var(--ice-dim); }
+
+  /* ---------- TEAM ---------- */
+  .team-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:22px; }
+  .team-card{ text-align:center; }
+  .avatar{
+    width:100%; aspect-ratio:1/1; border-radius:50%;
+    background:conic-gradient(from 200deg, var(--panel-hi), var(--blue) 40%, var(--panel-hi) 75%);
+    border:1px solid var(--grid-line); margin-bottom:16px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Syne',sans-serif; font-weight:700; font-size:1.6rem; color:var(--ice);
+    transition:transform 0.5s ease;
+  }
+  .team-card:hover .avatar{ transform:rotate(8deg) scale(1.03); }
+  .team-card h4{ font-size:1rem; text-transform:uppercase; }
+  .team-card .role{ font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:var(--copper); margin-top:4px; }
+
+  /* ---------- JOIN CTA ---------- */
+  .join{ background:var(--navy-deep); overflow:hidden; position:relative; }
+  .join .bg-blade{ position:absolute; right:-140px; top:50%; transform:translateY(-50%); width:640px; opacity:0.08; animation:spin 70s linear infinite; }
+  .join .wrap{ position:relative; z-index:2; text-align:left; max-width:680px; }
+  .join h2{ font-size:clamp(2rem,4vw,3rem); text-transform:uppercase; margin:16px 0 20px; }
+  .join p{ color:var(--ice-dim); max-width:520px; line-height:1.7; margin-bottom:34px; }
+
+  /* ---------- FOOTER ---------- */
+  footer{ border-top:1px solid var(--grid-line); padding:52px 0 30px; }
+  footer .wrap{ display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:30px; }
+  .foot-brand{ display:flex; align-items:center; gap:12px; }
+  .foot-brand img{ height:34px; }
+  .foot-links{ display:flex; gap:40px; flex-wrap:wrap; }
+  .foot-links div h5{ font-family:'IBM Plex Mono',monospace; font-size:0.68rem; letter-spacing:0.12em; color:var(--ice-dim); text-transform:uppercase; margin-bottom:12px;}
+  .foot-links a{ display:block; font-size:0.86rem; color:var(--ice); margin-bottom:8px; opacity:0.85; }
+  .foot-links a:hover{ color:var(--blue-light); opacity:1; }
+  .foot-bottom{ margin-top:44px; padding-top:20px; border-top:1px solid var(--grid-line); display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+  .foot-bottom .mono{ font-size:0.72rem; color:var(--steel); letter-spacing:0.04em; }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 980px){
+    .navlinks{ display:none; }
+    .hero .wrap{ grid-template-columns:1fr; }
+    .rig{ order:-1; max-width:340px; }
+    .about .wrap{ grid-template-columns:1fr; }
+    .domains-grid{ grid-template-columns:repeat(2,1fr); }
+    .stats .wrap{ grid-template-columns:repeat(2,1fr); }
+    .stat:nth-child(3){ border-left:none; }
+    .event-feature{ grid-template-columns:1fr; }
+    .past-events{ grid-template-columns:1fr; }
+    .proj-grid{ grid-template-columns:1fr; }
+    .team-grid{ grid-template-columns:repeat(2,1fr); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <div class="brand">
+      <img src="assets/logo.png" alt="Technical Club logo">
+      <div>
+        <span>TECHNICAL CLUB</span>
+        <small>ENGINEERING COLLECTIVE — EST. 2019</small>
+      </div>
+    </div>
+    <div class="navlinks">
+      <a href="#domains">Domains</a>
+      <a href="#events">Events</a>
+      <a href="#projects">Projects</a>
+      <a href="#team">Team</a>
+      <a href="#join" class="btn btn-primary">
+        <svg class="gear" width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 2 L14 6 L18 5 L17 9 L21 12 L17 15 L18 19 L14 18 L12 22 L10 18 L6 19 L7 15 L3 12 L7 9 L6 5 L10 6 Z" fill="currentColor"/></svg>
+        Join Us
+      </a>
+    </div>
+  </nav>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="blueprint-bg"></div>
+  <div class="scanline"></div>
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Student Engineering Collective</div>
+      <h1>Built on<br><em>momentum.</em></h1>
+      <p class="lede">Three blades, one rotor. Technical Club brings hardware tinkerers, software builders and researchers together — spinning ideas into things that actually ship.</p>
+      <div class="hero-cta">
+        <a href="#join" class="btn btn-primary">
+          <svg class="gear" width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 2 L14 6 L18 5 L17 9 L21 12 L17 15 L18 19 L14 18 L12 22 L10 18 L6 19 L7 15 L3 12 L7 9 L6 5 L10 6 Z" fill="currentColor"/></svg>
+          Join the Club
+        </a>
+        <a href="#projects" class="btn btn-outline">See What We Build</a>
+      </div>
+    </div>
+
+    <div class="rig">
+      <svg viewBox="0 0 500 500">
+        <defs>
+          <linearGradient id="bladeGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#2f72be"/>
+            <stop offset="100%" stop-color="#123354"/>
+          </linearGradient>
+          <linearGradient id="bladeGrad2" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0%" stop-color="#1c4a78"/>
+            <stop offset="100%" stop-color="#eaf2f8"/>
+          </linearGradient>
+          <linearGradient id="bladeGrad3" x1="1" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#2f72be"/>
+            <stop offset="100%" stop-color="#eaf2f8"/>
+          </linearGradient>
+        </defs>
+
+        <circle class="ring" cx="250" cy="250" r="210"/>
+        <circle class="ring" cx="250" cy="250" r="175"/>
+
+        <g class="rotor">
+          <path class="blade"    d="M250,250 C215,205 205,140 245,90 C270,58 320,68 315,115 C310,165 290,215 250,250 Z"/>
+          <path class="blade b2" d="M250,250 C215,205 205,140 245,90 C270,58 320,68 315,115 C310,165 290,215 250,250 Z" transform="rotate(120 250 250)"/>
+          <path class="blade b3" d="M250,250 C215,205 205,140 245,90 C270,58 320,68 315,115 C310,165 290,215 250,250 Z" transform="rotate(240 250 250)"/>
+        </g>
+        <circle class="hub" cx="250" cy="250" r="30"/>
+
+        <!-- leader lines + callouts -->
+        <path class="leader d1" d="M330,150 L390,110 L430,110"/>
+        <text class="callout d1" x="434" y="107"><tspan class="tag">BLADE 01</tspan></text>
+        <text class="callout d1" x="434" y="122" fill="#a9bdd0">HARDWARE</text>
+
+        <path class="leader d2" d="M150,330 L95,385 L55,385"/>
+        <text class="callout d2" x="-10" y="382" text-anchor="end"><tspan class="tag">BLADE 02</tspan></text>
+        <text class="callout d2" x="-10" y="397" text-anchor="end" fill="#a9bdd0">SOFTWARE</text>
+
+        <path class="leader d3" d="M330,330 L390,385 L430,385"/>
+        <text class="callout d3" x="434" y="382"><tspan class="tag">BLADE 03</tspan></text>
+        <text class="callout d3" x="434" y="397" fill="#a9bdd0">RESEARCH</text>
+
+        <text x="250" y="255" text-anchor="middle" class="callout d3" fill="#eaf2f8" style="animation-delay:2.2s;">CORE</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATS ============ -->
+<div class="stats">
+  <div class="wrap">
+    <div class="stat reveal"><span class="tick"></span><div class="num" data-target="120" data-suffix="+">0</div><span class="label">Active Members</span></div>
+    <div class="stat reveal"><span class="tick"></span><div class="num" data-target="35" data-suffix="+">0</div><span class="label">Projects Shipped</span></div>
+    <div class="stat reveal"><span class="tick"></span><div class="num" data-target="18" data-suffix="">0</div><span class="label">Events / Year</span></div>
+    <div class="stat reveal"><span class="tick"></span><div class="num" data-target="4" data-suffix="">0</div><span class="label">Domains</span></div>
+  </div>
+</div>
+
+<!-- ============ ABOUT ============ -->
+<section class="about" id="about">
+  <div class="wrap">
+    <div class="exploded reveal">
+      <svg viewBox="0 0 400 400">
+        <path d="M200,200 C165,155 155,90 195,40 C220,8 270,18 265,65 C260,115 240,165 200,200 Z" fill="none" stroke="#7fb0e6" stroke-width="1.4" transform="translate(-14,-18)"/>
+        <path d="M200,200 C165,155 155,90 195,40 C220,8 270,18 265,65 C260,115 240,165 200,200 Z" fill="none" stroke="#e8935c" stroke-width="1.4" transform="rotate(120 200 200) translate(16,-10)"/>
+        <path d="M200,200 C165,155 155,90 195,40 C220,8 270,18 265,65 C260,115 240,165 200,200 Z" fill="none" stroke="#eaf2f8" stroke-width="1.4" transform="rotate(240 200 200) translate(-4,20)"/>
+        <circle cx="200" cy="200" r="164" fill="none" stroke="#3d5670" stroke-width="1" stroke-dasharray="1 7"/>
+        <circle cx="200" cy="200" r="22" fill="#0f2a45" stroke="#7fb0e6" stroke-width="1.6"/>
+        <text x="200" y="205" text-anchor="middle" fill="#a9bdd0" font-family="IBM Plex Mono" font-size="9">EST 19</text>
+      </svg>
+    </div>
+    <div class="about-copy">
+      <div class="eyebrow reveal">Why three blades?</div>
+      <h2 class="reveal" style="font-size:2rem; text-transform:uppercase; margin:16px 0 30px;">One rotor, three disciplines.</h2>
+      <div class="part reveal">
+        <span class="idx">01</span>
+        <div><h3>Hardware</h3><p>Robotics, embedded systems and PCB work — the blade that gets its hands dirty in the lab.</p></div>
+      </div>
+      <div class="part reveal">
+        <span class="idx">02</span>
+        <div><h3>Software</h3><p>Web, app and systems engineering — turning circuits and ideas into interfaces people use.</p></div>
+      </div>
+      <div class="part reveal">
+        <span class="idx">03</span>
+        <div><h3>Research</h3><p>AI/ML, data and applied theory — the blade that asks why before we build what.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DOMAINS ============ -->
+<section id="domains">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Where members spin up</div>
+      <h2>Four domains, one workshop.</h2>
+      <p>Pick a lane or rotate through all of them — every domain runs its own builds, mentors and weekly sessions.</p>
+    </div>
+    <div class="domains-grid">
+      <div class="domain-card reveal">
+        <svg viewBox="0 0 24 24" fill="none"><path class="cog" d="M12 2 L14 6 L18 5 L17 9 L21 12 L17 15 L18 19 L14 18 L12 22 L10 18 L6 19 L7 15 L3 12 L7 9 L6 5 L10 6 Z" stroke="#7fb0e6" stroke-width="1.2"/></svg>
+        <div class="tag">DOMAIN — 01</div>
+        <h3>Robotics &amp; Hardware</h3>
+        <p>Autonomous bots, PCB design, sensor rigs. Weekly lab hours in the workshop.</p>
+      </div>
+      <div class="domain-card reveal">
+        <svg viewBox="0 0 24 24" fill="none"><path class="cog" d="M4 4 L20 4 L20 20 L4 20 Z M8 8 L16 16 M16 8 L8 16" stroke="#e8935c" stroke-width="1.2"/></svg>
+        <div class="tag">DOMAIN — 02</div>
+        <h3>Web &amp; App Dev</h3>
+        <p>Full-stack builds for real clients and campus tools students use every day.</p>
+      </div>
+      <div class="domain-card reveal">
+        <svg viewBox="0 0 24 24" fill="none"><path class="cog" d="M3 12 C7 4 17 4 21 12 C17 20 7 20 3 12 Z M12 9 A3 3 0 1 0 12.01 9" stroke="#7fb0e6" stroke-width="1.2"/></svg>
+        <div class="tag">DOMAIN — 03</div>
+        <h3>AI / ML &amp; Data</h3>
+        <p>Model training, applied research and data pipelines for club and campus projects.</p>
+      </div>
+      <div class="domain-card reveal">
+        <svg viewBox="0 0 24 24" fill="none"><path class="cog" d="M4 20 L10 4 L14 4 L20 20 M7 14 L17 14" stroke="#e8935c" stroke-width="1.2"/></svg>
+        <div class="tag">DOMAIN — 04</div>
+        <h3>Design &amp; Research</h3>
+        <p>Product design, documentation and the writing that makes builds reproducible.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EVENTS ============ -->
+<section id="events">
+  <div class="wrap">
+    <div class="events-top reveal">
+      <div class="section-head" style="margin-bottom:0;">
+        <div class="eyebrow">On the calendar</div>
+        <h2>Events</h2>
+      </div>
+    </div>
+
+    <div class="event-feature reveal">
+      <div class="date-block">
+        <span class="day">14</span>
+        <span class="mon">AUG — SAT</span>
+      </div>
+      <div class="info">
+        <div class="tag">UPCOMING — FLAGSHIP</div>
+        <h3>RotorHack 2026</h3>
+        <p>A 24-hour build sprint across all four domains. Bring a team or find one at the door — mentors, hardware kits and a demo stage provided.</p>
+      </div>
+    </div>
+
+    <div class="past-events">
+      <div class="past-card reveal">
+        <div class="num">EVT / 07</div>
+        <h4>Solder &amp; Circuits Night</h4>
+        <p>Hands-on PCB soldering workshop for first-year members.</p>
+      </div>
+      <div class="past-card reveal">
+        <div class="num">EVT / 06</div>
+        <h4>Ship It Fridays</h4>
+        <p>Monthly demo session where every team presents a working build.</p>
+      </div>
+      <div class="past-card reveal">
+        <div class="num">EVT / 05</div>
+        <h4>Intro to ROS Workshop</h4>
+        <p>A weekend crash course in robot operating system fundamentals.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROJECTS ============ -->
+<section id="projects">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Recent builds</div>
+      <h2>From the workshop floor.</h2>
+      <p>A sample of what members have shipped this year — every project starts as a weekend idea.</p>
+    </div>
+    <div class="proj-grid">
+      <div class="proj-card reveal">
+        <div class="spec"><span>PRJ-014</span><span>HARDWARE</span></div>
+        <h3>Line-Follower Swarm</h3>
+        <p>A fleet of coordinating micro-bots built for the inter-college robotics meet.</p>
+        <div class="stack"><span>ESP32</span><span>C++</span><span>PCB</span></div>
+      </div>
+      <div class="proj-card reveal">
+        <div class="spec"><span>PRJ-021</span><span>SOFTWARE</span></div>
+        <h3>Campus Resource Hub</h3>
+        <p>A booking system for shared lab equipment, used by every technical society on campus.</p>
+        <div class="stack"><span>Next.js</span><span>Postgres</span></div>
+      </div>
+      <div class="proj-card reveal">
+        <div class="spec"><span>PRJ-028</span><span>AI / ML</span></div>
+        <h3>Attendance by Vision</h3>
+        <p>A lightweight facial-recognition attendance tool built for club sessions.</p>
+        <div class="stack"><span>Python</span><span>OpenCV</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TEAM ============ -->
+<section id="team">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">The core rotor</div>
+      <h2>Run by members, for members.</h2>
+    </div>
+    <div class="team-grid">
+      <div class="team-card reveal"><div class="avatar">AK</div><h4>Aarav Kulkarni</h4><div class="role">President</div></div>
+      <div class="team-card reveal"><div class="avatar">SP</div><h4>Sara Patil</h4><div class="role">Hardware Lead</div></div>
+      <div class="team-card reveal"><div class="avatar">RD</div><h4>Rohan Deshmukh</h4><div class="role">Software Lead</div></div>
+      <div class="team-card reveal"><div class="avatar">NM</div><h4>Neha Mehta</h4><div class="role">Research Lead</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ JOIN CTA ============ -->
+<section class="join" id="join">
+  <svg class="bg-blade" viewBox="0 0 500 500">
+    <path fill="#2f72be" d="M250,250 C215,205 205,140 245,90 C270,58 320,68 315,115 C310,165 290,215 250,250 Z"/>
+    <path fill="#2f72be" d="M250,250 C215,205 205,140 245,90 C270,58 320,68 315,115 C310,165 290,215 250,250 Z" transform="rotate(120 250 250)"/>
+    <path fill="#2f72be" d="M250,250 C215,205 205,140 245,90 C270,58 320,68 315,115 C310,165 290,215 250,250 Z" transform="rotate(240 250 250)"/>
+  </svg>
+  <div class="wrap reveal">
+    <div class="eyebrow">Recruitment is open</div>
+    <h2>Add your blade to the rotor.</h2>
+    <p>No prior experience required — just curiosity and a willingness to build in public. New-member onboarding runs at the start of every semester.</p>
+    <div class="hero-cta">
+      <a href="#" class="btn btn-primary">
+        <svg class="gear" width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 2 L14 6 L18 5 L17 9 L21 12 L17 15 L18 19 L14 18 L12 22 L10 18 L6 19 L7 15 L3 12 L7 9 L6 5 L10 6 Z" fill="currentColor"/></svg>
+        Apply Now
+      </a>
+      <a href="#domains" class="btn btn-outline">Explore Domains</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="foot-brand">
+        <img src="assets/logo.png" alt="Technical Club logo">
+        <span style="font-family:'Syne',sans-serif; font-weight:700;">TECHNICAL CLUB</span>
+      </div>
+      <p class="mono" style="margin-top:14px; color:var(--ice-dim); max-width:260px; font-size:0.8rem;">A student engineering collective — hardware, software and research, spinning together.</p>
+    </div>
+    <div class="foot-links">
+      <div>
+        <h5>Explore</h5>
+        <a href="#domains">Domains</a>
+        <a href="#events">Events</a>
+        <a href="#projects">Projects</a>
+      </div>
+      <div>
+        <h5>Club</h5>
+        <a href="#team">Team</a>
+        <a href="#join">Join Us</a>
+        <a href="#about">About</a>
+      </div>
+      <div>
+        <h5>Connect</h5>
+        <a href="#">Instagram</a>
+        <a href="#">GitHub</a>
+        <a href="#">Email</a>
+      </div>
+    </div>
+  </div>
+  <div class="wrap foot-bottom">
+    <span class="mono">© 2026 TECHNICAL CLUB — ALL BLADES TURNING</span>
+    <span class="mono">BUILT IN THE WORKSHOP, RUN BY MEMBERS</span>
+  </div>
+</footer>
+
+<script>
+  // scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.classList.add('in-view');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // stat count-up
+  const nums = document.querySelectorAll('.stat .num');
+  const numIo = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        const el = entry.target;
+        const target = parseInt(el.getAttribute('data-target'), 10);
+        let cur = 0;
+        const step = Math.max(1, Math.round(target / 40));
+        const timer = setInterval(() => {
+          cur += step;
+          if(cur >= target){ cur = target; clearInterval(timer); }
+          el.textContent = cur;
+        }, 30);
+        numIo.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+  nums.forEach(el => numIo.observe(el));
+</script>
+
+</body>
+</html>
