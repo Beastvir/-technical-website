@@ -436,7 +436,7 @@
         
          <Link to={"/gallery"} onClick={() => setMenuOpen(false)}>gallery</Link>
         <a href="#team" onClick={() => setMenuOpen(false)}>Team</a>
-        <a href="#join" onClick={() => setMenuOpen(false)}>Join</a>
+        <Link to={"/join"} onClick={() => setMenuOpen(false)}>Join</Link>
       </div>
 
       <section className="hero" id="top">
