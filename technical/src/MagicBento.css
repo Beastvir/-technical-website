@@ -1,0 +1,210 @@
+:root {
+  --hue: 27;
+  --sat: 69%;
+  --white: hsl(0, 0%, 100%);
+  --purple-primary: rgba(132, 0, 255, 1);
+  --purple-glow: rgba(132, 0, 255, 0.2);
+  --purple-border: rgba(132, 0, 255, 0.8);
+  --border-color: rgba(191, 230, 255, 0.16);
+  --background-dark: #0f2c4c;
+  color-scheme: light dark;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5em;
+  padding: 0.5em 0;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-size: clamp(1rem, 0.9rem + 0.5vw, 1.5rem);
+}
+
+.magic-bento-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  min-height: 280px;
+  width: 100%;
+  height: 100%;
+  padding: 1.5em;
+  border-radius: 18px;
+  border: 1px solid var(--border-color);
+  background: var(--background-dark);
+  box-sizing: border-box;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  --glow-x: 50%;
+  --glow-y: 50%;
+  --glow-intensity: 0;
+  --glow-radius: 200px;
+}
+
+.magic-bento-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45);
+}
+
+.magic-bento-event-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+  z-index: 2;
+  position: relative;
+}
+
+.magic-bento-event-top {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.magic-bento-event-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #ffb703;
+  text-transform: uppercase;
+}
+
+.magic-bento-event-title {
+  font-family: 'Chakra Petch', sans-serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: 0.02em;
+  line-height: 1.25;
+  color: #eef4f9;
+  margin-top: 4px;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.magic-bento-event-tag {
+  align-self: flex-start;
+  margin-top: 6px;
+  background: #ffb703;
+  color: #081b30;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 4px 10px;
+  border-radius: 6px;
+  text-transform: uppercase;
+}
+
+.magic-bento-event-bottom {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.magic-bento-event-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: #bfe6ff;
+  opacity: 0.85;
+  margin: 0;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.magic-bento-event-meta {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: #bfe6ff;
+  opacity: 0.6;
+  border-top: 1px solid rgba(191, 230, 255, 0.1);
+  padding-top: 10px;
+}
+
+@media (max-width: 900px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Border glow effect */
+.magic-bento-card--border-glow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  background: radial-gradient(
+    var(--glow-radius) circle at var(--glow-x) var(--glow-y),
+    rgba(var(--glow-color, 63, 169, 245), calc(var(--glow-intensity) * 0.9)) 0%,
+    rgba(var(--glow-color, 63, 169, 245), calc(var(--glow-intensity) * 0.4)) 35%,
+    transparent 65%
+  );
+  border-radius: inherit;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.magic-bento-card--border-glow:hover::after {
+  opacity: 1;
+}
+
+.particle-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.particle::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: rgba(var(--glow-color, 63, 169, 245), 0.2);
+  border-radius: 50%;
+  z-index: -1;
+}
+
+/* Global spotlight styles */
+.global-spotlight {
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+  z-index: 200 !important;
+  pointer-events: none;
+}
+
+.bento-section {
+  position: relative;
+  user-select: none;
+}
