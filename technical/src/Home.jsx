@@ -1,7 +1,14 @@
- import React, { useEffect, useRef, useState, useCallback } from "react";
- import { Routes, Route } from "react-router-dom";
- import { Link } from "react-router-dom";
- import './Home.css'
+import React, { useEffect, useRef, useState, useCallback, lazy, Suspense } from "react";
+import { Routes, Route } from "react-router-dom";
+import { Link } from "react-router-dom";
+import PillNav from './PillNav';
+import BorderGlow from './BorderGlow';
+import './Home.css';
+
+const GridScan = lazy(() => import('./GridScan'));
+const CircularGallery = lazy(() => import('./CircularGallery'));
+const MagicBento = lazy(() => import('./MagicBento'));
+const EventModal = lazy(() => import('./EventModal'));
  function useWebFonts() {
    useEffect(() => {
      const id = "tc-fonts";
@@ -324,61 +331,180 @@
  ];
  
  function Gallery() {
-   const rotates = [-4, 3, -2, 5, -3, 2];
- 
-   const photos = imgss.map((img) => ({ caption: img.caption, gradient: `url(${img.url})`, isPhoto: true }));
- 
-   const board = imgss.map((img, i) => ({
-     caption: img.caption,
-     gradient: `url(${img.url})`,
-     rotate: rotates[i % rotates.length],
-     isPhoto: true,
-   }));
+   const galleryItems = [
+     { image: "1.jpeg", text: "24HR BUILD SPRINT" },
+     { image: "2.jpeg", text: "BOT ARENA FINALS" },
+     { image: "3.jpeg", text: "SOLDER & CHILL" },
+     { image: "4.jpeg", text: "HACKATHON WINNERS" },
+     { image: "ground.jpeg", text: "ROBOTICS FIELD" },
+     { image: "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?auto=format&fit=crop&w=800&q=80", text: "CIRCUIT LAB" },
+     { image: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80", text: "HARDWARE BAY" },
+     { image: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=800&q=80", text: "TEAM WORKSHOP" },
+     { image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80", text: "PROTOTYPE TESTING" },
+     { image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80", text: "MICROCONTROLLER SPRINT" }
+   ];
  
    return (
-     <section className="wrap" id="gallery">
-       <Reveal className="section-head">
-         <div className="eyebrow mono">Proof we actually have fun</div>
-         <h2>The gallery, glitching in real time</h2>
-         <p>Wins, fails, and everything soldered in between. Swap in your own event photos — the glitch transition and stickers do the rest.</p>
-       </Reveal>
+     <section id="gallery" style={{ padding: '100px 0', overflow: 'hidden' }}>
+       <div className="wrap" style={{ paddingBottom: '30px' }}>
+         <Reveal className="section-head">
+           <div className="eyebrow mono">Proof we actually have fun</div>
+           <h2>The gallery in motion</h2>
+           <p>Wins, fails, and everything soldered in between. Drag or scroll to navigate through the 3D gallery.</p>
+         </Reveal>
+       </div>
  
-       <Reveal className="gallery-feature-wrap">
-         <GlitchFeature photos={photos} />
-         <Sticker text="SQUAD GOALS ✨" tone="amber" tail="left" style={{ top: "-18px", left: "-14px" }} />
-         <Sticker text="WE WON! 🏆" tone="blue" tail="bottom" style={{ top: "10%", right: "-30px" }} />
-         <Sticker text="NOM NOM CIRCUITS" tone="ice" tail="right" style={{ bottom: "-16px", left: "6%" }} />
-       </Reveal>
- 
-       <Reveal className="corkboard">
-         <Sticker text="LOL 😂" tone="amber" tail="top" style={{ top: "-22px", left: "18%" }} />
-         <Sticker text="CHAOTIC GOOD" tone="blue" tail="top" style={{ top: "-24px", right: "10%" }} />
-         {board.map((p) => (
-           <Polaroid key={p.caption} {...p} />
-         ))}
-         <Sticker text="MORE COMING SOON →" tone="ice" tail="left" style={{ bottom: "-20px", right: "4%" }} />
+       <Reveal
+         className="circular-gallery-full-wrap"
+         style={{
+           width: '100vw',
+           position: 'relative',
+           left: '50%',
+           right: '50%',
+           marginLeft: '-50vw',
+           marginRight: '-50vw',
+           height: '520px',
+           overflow: 'hidden'
+         }}
+       >
+         <Suspense fallback={null}>
+           <CircularGallery
+             items={galleryItems}
+             bend={1}
+             textColor="#ffffff"
+             borderRadius={0.05}
+             scrollEase={0.05}
+             fontUrl="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&display=swap"
+             font="bold 26px Chakra Petch"
+           />
+         </Suspense>
        </Reveal>
      </section>
    );
  }
+ 
  function TechnicalClub() {
   useWebFonts();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
   const [burst, confettiLayer] = useConfetti();
 
   const events = [
-    { date: "SAT · AUG 08", title: "24-Hour Build Sprint", tag: "Flagship", desc: "Teams get a mystery parts box and 24 hours. Whatever spins, blinks, or beeps by sunrise wins the trophy blade.", loc: "Workshop Bay", meta: "Teams of 4" },
-    { date: "THU · AUG 20", title: "Solder & Chill", tag: "Beginner", desc: "Zero-experience-needed night. Learn to solder, build a blinking badge, keep the badge.", loc: "Lab 3", meta: "Open entry" },
-    { date: "FRI · SEP 04", title: "Bot Arena Finals", tag: "Live", desc: "Semester's combat bots face off. Bring earplugs, bring snacks, bring your loudest cheer.", loc: "Main Court", meta: "All welcome" },
+    {
+      date: "SAT · AUG 08",
+      title: "24-HOUR BUILD SPRINT",
+      tag: "Flagship",
+      desc: "Teams get a mystery parts box and 24 hours. Whatever spins, blinks, or beeps by sunrise wins the trophy blade.",
+      loc: "Workshop Bay",
+      meta: "Teams of 4",
+      glowColor: "255, 183, 3",
+      images: [
+        "1.jpeg",
+        "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?auto=format&fit=crop&w=1000&q=80",
+        "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=1000&q=80"
+      ]
+    },
+    {
+      date: "THU · AUG 20",
+      title: "SOLDER & CHILL",
+      tag: "Beginner",
+      desc: "Zero-experience-needed night. Learn to solder, build a blinking badge, keep the badge.",
+      loc: "Lab 3",
+      meta: "Open entry",
+      glowColor: "63, 169, 245",
+      images: [
+        "3.jpeg",
+        "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1000&q=80",
+        "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1000&q=80"
+      ]
+    },
+    {
+      date: "FRI · SEP 04",
+      title: "BOT ARENA FINALS",
+      tag: "Live",
+      desc: "Semester's combat bots face off. Bring earplugs, bring snacks, bring your loudest cheer.",
+      loc: "Main Court",
+      meta: "All welcome",
+      glowColor: "126, 217, 87",
+      images: [
+        "2.jpeg",
+        "ground.jpeg",
+        "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1000&q=80"
+      ]
+    },
+    {
+      date: "WED · SEP 16",
+      title: "AI HARDWARE HACK",
+      tag: "AI & ML",
+      desc: "Deploy edge AI models on microcontrollers to build smart sensors and autonomous vision systems.",
+      loc: "Innovation Hub",
+      meta: "Pairs",
+      glowColor: "192, 132, 252",
+      images: [
+        "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?auto=format&fit=crop&w=1000&q=80",
+        "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1000&q=80",
+        "4.jpeg"
+      ]
+    },
+    {
+      date: "SAT · OCT 03",
+      title: "PCB DESIGN SPRINT",
+      tag: "Workshop",
+      desc: "Design your custom circuit board in KiCad, print it, and route high-speed traces from scratch.",
+      loc: "Lab 2",
+      meta: "Limited 25",
+      glowColor: "244, 114, 182",
+      images: [
+        "4.jpeg",
+        "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1000&q=80",
+        "1.jpeg"
+      ]
+    },
+    {
+      date: "FRI · OCT 23",
+      title: "CYBER PHYSICAL EXPO",
+      tag: "Expo",
+      desc: "Showcase semester-long IoT and robotics prototypes to industry mentors and tech recruiters.",
+      loc: "Grand Hall",
+      meta: "Public",
+      glowColor: "56, 189, 248",
+      images: [
+        "ground.jpeg",
+        "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=1000&q=80",
+        "2.jpeg"
+      ]
+    }
   ];
 
   const blades = [
-    { glow: "#3fa9f5", title: "Hardware", tag: "Hands-on", desc: "Solder stations, motor drivers, and robots that occasionally listen to instructions. Build bots for the annual arena battle.",
-      icon: <path d="M4 17V7l8-4 8 4v10l-8 4-8-4Zm0-10 8 4 8-4M12 11v10" stroke="#3fa9f5" strokeWidth="1.6" /> },
-    { glow: "#ffb703", title: "Software", tag: "Ship weekly", desc: "Hackathons, open-source sprints, and apps born from \"wouldn't it be cool if...\" at 1am. Ship early, ship loud.",
-      icon: <path d="M8 9l-5 3 5 3M16 9l5 3-5 3M13 5l-2 14" stroke="#ffb703" strokeWidth="1.6" /> },
-    { glow: "#7ed957", title: "Digital Marketing", tag: "Get the word out", desc: "Campaigns, content, and campus buzz. Posters, socials, and hype videos that get people through the workshop door.",
-      icon: <><circle cx="12" cy="12" r="8" stroke="#7ed957" strokeWidth="1.6" /><path d="M12 4v4M12 16v4M4 12h4M16 12h4" stroke="#7ed957" strokeWidth="1.6" /></> },
+    {
+      glow: "#3fa9f5",
+      glowColor: "205 92 60",
+      colors: ['#3fa9f5', '#1f6fb2', '#bfe6ff'],
+      title: "HARDWARE",
+      tag: "HANDS-ON",
+      desc: "Solder stations, motor drivers, and robots that occasionally listen to instructions. Build bots for the annual arena battle.",
+      icon: <path d="M4 17V7l8-4 8 4v10l-8 4-8-4Zm0-10 8 4 8-4M12 11v10" stroke="#3fa9f5" strokeWidth="2.2" />
+    },
+    {
+      glow: "#ffb703",
+      glowColor: "43 100 51",
+      colors: ['#ffb703', '#ff8800', '#ffe066'],
+      title: "SOFTWARE",
+      highlight: "E",
+      tag: "SHIP WEEKLY",
+      desc: "Hackathons, open-source sprints, and apps born from \"wouldn't it be cool if...\" at 1am. Ship early, ship loud.",
+      icon: <path d="M8 9l-5 3 5 3M16 9l5 3-5 3M13 5l-2 14" stroke="#ffb703" strokeWidth="2.2" />
+    },
+    {
+      glow: "#7ed957",
+      glowColor: "100 63 60",
+      colors: ['#7ed957', '#4caf50', '#a8f087'],
+      title: "DIGITAL MARKETING",
+      tag: "GET THE WORD OUT",
+      desc: "Campaigns, content, and campus buzz. Posters, socials, and hype videos that get people through the workshop door.",
+      icon: <><circle cx="12" cy="12" r="8" stroke="#7ed957" strokeWidth="2.2" /><path d="M12 4v4M12 16v4M4 12h4M16 12h4" stroke="#7ed957" strokeWidth="2.2" /></>
+    },
   ];
 
   const team = [
@@ -406,40 +532,42 @@
 {console.log("hello")}
       <div className="grid-bg" />
 
-      <header>
-        <a href="#top" className="brand">
-          <BrandMark />
-          <span className="brand-text">
-            TECHNICAL<span>.</span>CLUB
-          </span>
-        </a>
-        <nav>
-          <ul>
-            <li><a href="#blades">What We Do</a></li>
-            <li><a href="#events">Events</a></li>
-            <li><Link to={"/gallery"}>gallery</Link></li>
-            <li><a href="#team">Team</a></li>
-            <li><a href="#join">Join</a></li>
-          </ul>
-        </nav>
-        <div className="nav-links">
-          <a href="#join" className="btn">Join the Club</a>
-          <button className={`burger ${menuOpen ? "open" : ""}`} aria-label="Menu" onClick={() => setMenuOpen((v) => !v)}>
-            <span></span><span></span><span></span>
-          </button>
-        </div>
-      </header>
-
-      <div className={`mobile-panel ${menuOpen ? "open" : ""}`}>
-        <a href="#blades" onClick={() => setMenuOpen(false)}>What We Do</a>
-        <a href="#events" onClick={() => setMenuOpen(false)}>Events</a>
-        
-         <Link to={"/gallery"} onClick={() => setMenuOpen(false)}>gallery</Link>
-        <a href="#team" onClick={() => setMenuOpen(false)}>Team</a>
-        <Link to={"/join"} onClick={() => setMenuOpen(false)}>Join</Link>
-      </div>
+      <PillNav
+        logo="logo.png"
+        logoAlt="Technical Club Logo"
+        items={[
+          { label: 'What We Do', href: '#blades' },
+          { label: 'Events', href: '#events' },
+          { label: 'Gallery', href: '/gallery' },
+          { label: 'Team', href: '#team' },
+          { label: 'Join', href: '#join' }
+        ]}
+        baseColor="#000000"
+        pillColor="#ffffff"
+        pillTextColor="#000000"
+        hoveredPillTextColor="#ffffff"
+        ease="power3.easeOut"
+        initialLoadAnimation
+      />
 
       <section className="hero" id="top">
+        <div className="hero-gridscan-bg">
+          <Suspense fallback={null}>
+            <GridScan
+              sensitivity={0.55}
+              lineThickness={1}
+              linesColor="#1b4570"
+              gridScale={0.07}
+              scanColor="#2863c4"
+              scanOpacity={0.4}
+              enablePost
+              bloomIntensity={0.6}
+              chromaticAberration={0.002}
+              noiseIntensity={0.01}
+              scanGlow={1.1}
+            />
+          </Suspense>
+        </div>
         <div className="hero-inner">
           <div>
             <div className="eyebrow mono">Est. campus workshop, est. chaos</div>
@@ -480,14 +608,74 @@
           <p>Just like the mark on our badge, everything we do spins out from one core: making things, together. Pick a blade — or spin through all three.</p>
         </Reveal>
         <Reveal className="blades" as="div">
-          {blades.map((b, i) => (
-            <div className="blade-card" style={{ "--blade-glow": b.glow, "--blade-delay": `${i * 0.4}s` }} key={b.title}>
-              <svg className="blade-icon" viewBox="0 0 24 24" fill="none">{b.icon}</svg>
-              <h3><span className="title-text">{b.title}</span></h3>
-              <p>{b.desc}</p>
-              <span className="blade-tag">{b.tag}</span>
+          <BorderGlow
+            edgeSensitivity={30}
+            glowColor="205 92 60"
+            backgroundColor="rgba(8, 27, 48, 0.75)"
+            borderRadius={22}
+            glowRadius={35}
+            glowIntensity={1.2}
+            coneSpread={28}
+            animated={false}
+            colors={['#3fa9f5', '#1f6fb2', '#bfe6ff']}
+          >
+            <div className="blade-glow-card">
+              <div className="blade-glow-top">
+                <span className="blade-glow-label mono" style={{ color: "#3fa9f5" }}>HANDS-ON</span>
+                <svg className="blade-glow-icon" viewBox="0 0 24 24" fill="none"><path d="M4 17V7l8-4 8 4v10l-8 4-8-4Zm0-10 8 4 8-4M12 11v10" stroke="#3fa9f5" strokeWidth="2.2" /></svg>
+              </div>
+              <div className="blade-glow-bottom">
+                <h3>HARDWARE</h3>
+                <p>Solder stations, motor drivers, and robots that occasionally listen to instructions. Build bots for the annual arena battle.</p>
+              </div>
             </div>
-          ))}
+          </BorderGlow>
+
+          <BorderGlow
+            edgeSensitivity={30}
+            glowColor="43 100 51"
+            backgroundColor="rgba(8, 27, 48, 0.75)"
+            borderRadius={22}
+            glowRadius={35}
+            glowIntensity={1.2}
+            coneSpread={28}
+            animated={false}
+            colors={['#ffb703', '#ff8800', '#ffe066']}
+          >
+            <div className="blade-glow-card">
+              <div className="blade-glow-top">
+                <span className="blade-glow-label mono" style={{ color: "#ffb703" }}>SHIP WEEKLY</span>
+                <svg className="blade-glow-icon" viewBox="0 0 24 24" fill="none"><path d="M8 9l-5 3 5 3M16 9l5 3-5 3M13 5l-2 14" stroke="#ffb703" strokeWidth="2.2" /></svg>
+              </div>
+              <div className="blade-glow-bottom">
+                <h3>SOFTWARE</h3>
+                <p>Hackathons, open-source sprints, and apps born from "wouldn't it be cool if..." at 1am. Ship early, ship loud.</p>
+              </div>
+            </div>
+          </BorderGlow>
+
+          <BorderGlow
+            edgeSensitivity={30}
+            glowColor="100 63 60"
+            backgroundColor="rgba(8, 27, 48, 0.75)"
+            borderRadius={22}
+            glowRadius={35}
+            glowIntensity={1.2}
+            coneSpread={28}
+            animated={false}
+            colors={['#7ed957', '#4caf50', '#a8f087']}
+          >
+            <div className="blade-glow-card">
+              <div className="blade-glow-top">
+                <span className="blade-glow-label mono" style={{ color: "#7ed957" }}>GET THE WORD OUT</span>
+                <svg className="blade-glow-icon" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#7ed957" strokeWidth="2.2" /><path d="M12 4v4M12 16v4M4 12h4M16 12h4" stroke="#7ed957" strokeWidth="2.2" /></svg>
+              </div>
+              <div className="blade-glow-bottom">
+                <h3>DIGITAL MARKETING</h3>
+                <p>Campaigns, content, and campus buzz. Posters, socials, and hype videos that get people through the workshop door.</p>
+              </div>
+            </div>
+          </BorderGlow>
         </Reveal>
       </section>
 
@@ -497,20 +685,23 @@
           <h2>Upcoming builds &amp; meetups</h2>
           <p>No boring lectures — every session ends with something that lights up, moves, or (occasionally) smokes a little.</p>
         </Reveal>
-        <Reveal className="events">
-          {events.map((ev) => (
-            <div className="event-card" key={ev.title}>
-              <div className="event-top">
-                <div className="event-date mono">{ev.date}</div>
-                <h3>{ev.title}</h3>
-                <span className="event-tag">{ev.tag}</span>
-              </div>
-              <div className="event-bottom">
-                <p>{ev.desc}</p>
-                <div className="event-meta"><span>{ev.loc}</span><span>{ev.meta}</span></div>
-              </div>
-            </div>
-          ))}
+        <Reveal className="events-bento-wrap" as="div">
+          <Suspense fallback={null}>
+            <MagicBento
+              cards={events}
+              onCardClick={(ev) => setSelectedEvent(ev)}
+              textAutoHide={false}
+              enableStars={true}
+              enableSpotlight={true}
+              enableBorderGlow={true}
+              enableTilt={true}
+              enableMagnetism={true}
+              clickEffect={true}
+              spotlightRadius={320}
+              particleCount={14}
+              glowColor="63, 169, 245"
+            />
+          </Suspense>
         </Reveal>
       </section>
 
@@ -554,6 +745,9 @@
       </footer>
 
       {confettiLayer}
+      <Suspense fallback={null}>
+        {selectedEvent && <EventModal event={selectedEvent} onClose={() => setSelectedEvent(null)} />}
+      </Suspense>
     </div>
   );
 }

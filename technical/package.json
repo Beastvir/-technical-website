@@ -10,11 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "face-api.js": "^0.22.2",
+    "gsap": "^3.15.0",
     "lucide-react": "^1.25.0",
     "motion": "^12.42.2",
+    "ogl": "^1.0.11",
+    "postprocessing": "^6.39.3",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "react-router-dom": "^7.18.1"
+    "react-router-dom": "^7.18.1",
+    "three": "^0.185.1"
   },
   "devDependencies": {
     "@types/react": "^19.2.17",
