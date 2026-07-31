@@ -2,8 +2,5 @@
   "installCommand": "cd technical && npm install",
   "buildCommand": "cd technical && npm run build",
   "outputDirectory": "technical/dist",
-  "framework": "vite",
-  "engines": {
-    "node": "22.x"
-  }
+  "framework": "vite"
 }
