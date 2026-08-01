@@ -332,16 +332,23 @@ const EventModal = lazy(() => import('./EventModal'));
  
  function Gallery() {
    const galleryItems = [
-     { image: "1.jpeg", text: "24HR BUILD SPRINT" },
-     { image: "2.jpeg", text: "BOT ARENA FINALS" },
-     { image: "3.jpeg", text: "SOLDER & CHILL" },
-     { image: "4.jpeg", text: "HACKATHON WINNERS" },
-     { image: "ground.jpeg", text: "ROBOTICS FIELD" },
-     { image: "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?auto=format&fit=crop&w=800&q=80", text: "CIRCUIT LAB" },
-     { image: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80", text: "HARDWARE BAY" },
-     { image: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=800&q=80", text: "TEAM WORKSHOP" },
-     { image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80", text: "PROTOTYPE TESTING" },
-     { image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80", text: "MICROCONTROLLER SPRINT" }
+     { image: "gallery_1.jpeg", text: "" },
+     { image: "gallery_2.jpeg", text: "" },
+     { image: "gallery_3.jpeg", text: "" },
+     { image: "gallery_4.jpeg", text: "" },
+     { image: "gallery_5.jpeg", text: "" },
+     { image: "gallery_6.jpeg", text: "" },
+     { image: "gallery_7.jpeg", text: "" },
+     { image: "gallery_8.jpeg", text: "" },
+     { image: "gallery_9.jpeg", text: "" },
+     { image: "gallery_10.jpeg", text: "" },
+     { image: "gallery_11.jpeg", text: "" },
+     { image: "gallery_12.jpeg", text: "" },
+     { image: "gallery_13.jpeg", text: "" },
+     { image: "gallery_14.jpeg", text: "" },
+     { image: "gallery_15.jpeg", text: "" },
+     { image: "gallery_16.jpeg", text: "" },
+     { image: "gallery_17.jpeg", text: "" }
    ];
  
    return (
@@ -391,89 +398,83 @@ const EventModal = lazy(() => import('./EventModal'));
 
   const events = [
     {
-      date: "SAT · AUG 08",
-      title: "24-HOUR BUILD SPRINT",
-      tag: "Flagship",
-      desc: "Teams get a mystery parts box and 24 hours. Whatever spins, blinks, or beeps by sunrise wins the trophy blade.",
-      loc: "Workshop Bay",
-      meta: "Teams of 4",
-      glowColor: "255, 183, 3",
-      images: [
-        "1.jpeg",
-        "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?auto=format&fit=crop&w=1000&q=80",
-        "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=1000&q=80"
-      ]
-    },
-    {
-      date: "THU · AUG 20",
-      title: "SOLDER & CHILL",
-      tag: "Beginner",
-      desc: "Zero-experience-needed night. Learn to solder, build a blinking badge, keep the badge.",
-      loc: "Lab 3",
-      meta: "Open entry",
-      glowColor: "63, 169, 245",
-      images: [
-        "3.jpeg",
-        "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1000&q=80",
-        "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1000&q=80"
-      ]
-    },
-    {
-      date: "FRI · SEP 04",
-      title: "BOT ARENA FINALS",
-      tag: "Live",
-      desc: "Semester's combat bots face off. Bring earplugs, bring snacks, bring your loudest cheer.",
+      date: "COMPLETED",
+      title: "ROBO DRIVE",
+      tag: "Robotics",
+      desc: "Contestants built their own RC cars from scratch and had to navigate a challenging obstacle course. Precision driving, custom builds, and engineering skill were tested in this high-energy competition.",
       loc: "Main Court",
-      meta: "All welcome",
-      glowColor: "126, 217, 87",
-      images: [
-        "2.jpeg",
-        "ground.jpeg",
-        "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1000&q=80"
-      ]
+      meta: "Teams",
+      glowColor: "255, 183, 3",
+      highlights: [
+        "Hand-built RC cars from custom chassis and electronics",
+        "Multi-stage obstacle course with increasing difficulty"
+      ],
+      images: []
     },
     {
-      date: "WED · SEP 16",
-      title: "AI HARDWARE HACK",
-      tag: "AI & ML",
-      desc: "Deploy edge AI models on microcontrollers to build smart sensors and autonomous vision systems.",
-      loc: "Innovation Hub",
-      meta: "Pairs",
+      date: "COMPLETED",
+      title: "PIXEL PANORAMA",
+      tag: "Creative",
+      desc: "A video editing workshop and challenge rolled into one. Participants learned professional editing techniques and then put their skills to the test by creating a compelling short video under a time limit.",
+      loc: "Media Lab",
+      meta: "Individual",
+      glowColor: "63, 169, 245",
+      highlights: [
+        "Hands-on workshop covering editing techniques and effects",
+        "Live challenge with a time limit and theme reveal"
+      ],
+      images: []
+    },
+    {
+      date: "COMPLETED",
+      title: "GRANDMASTERS JEOPARDY",
+      tag: "Quiz",
+      desc: "An epic Marvel-themed Jeopardy showdown where teams competed across categories spanning tech, trivia, and the MCU. Fast buzzers, fierce competition, and a whole lot of pop culture chaos.",
+      loc: "Seminar Hall",
+      meta: "Teams of 3",
       glowColor: "192, 132, 252",
-      images: [
-        "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?auto=format&fit=crop&w=1000&q=80",
-        "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1000&q=80",
-        "4.jpeg"
-      ]
+      highlights: [
+        "Marvel-themed categories across tech and pop culture",
+        "Live buzzer rounds with surprise bonus challenges"
+      ],
+      images: []
     },
     {
-      date: "SAT · OCT 03",
-      title: "PCB DESIGN SPRINT",
+      date: "COMPLETED",
+      title: "ROBO MANIA",
       tag: "Workshop",
-      desc: "Design your custom circuit board in KiCad, print it, and route high-speed traces from scratch.",
-      loc: "Lab 2",
-      meta: "Limited 25",
-      glowColor: "244, 114, 182",
-      images: [
-        "4.jpeg",
-        "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1000&q=80",
-        "1.jpeg"
-      ]
+      desc: "A deep dive into robotics, electronics, and embedded systems. Members got hands-on experience with sensors, motors, and microcontrollers — learning how to build and program robots from the ground up.",
+      loc: "Workshop Bay",
+      meta: "Open entry",
+      glowColor: "126, 217, 87",
+      highlights: [
+        "Beginner-friendly sessions on circuits and microcontrollers",
+        "Build and program your own mini robot from scratch"
+      ],
+      images: []
     },
     {
-      date: "FRI · OCT 23",
-      title: "CYBER PHYSICAL EXPO",
-      tag: "Expo",
-      desc: "Showcase semester-long IoT and robotics prototypes to industry mentors and tech recruiters.",
-      loc: "Grand Hall",
-      meta: "Public",
+      date: "COMING SOON",
+      title: "COMING SOON",
+      tag: "TBA",
+      desc: "Something exciting is in the works. Stay tuned for the next Technical Club event — follow our socials to be the first to know.",
+      loc: "TBA",
+      meta: "TBA",
       glowColor: "56, 189, 248",
-      images: [
-        "ground.jpeg",
-        "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=1000&q=80",
-        "2.jpeg"
-      ]
-    }
+      highlights: [],
+      images: []
+    },
+    {
+      date: "COMING SOON",
+      title: "COMING SOON",
+      tag: "TBA",
+      desc: "Another event is being planned by the team. Keep an eye on our announcements — it's going to be worth the wait.",
+      loc: "TBA",
+      meta: "TBA",
+      glowColor: "244, 114, 182",
+      highlights: [],
+      images: []
+    },
   ];
 
   const blades = [
@@ -578,7 +579,7 @@ const EventModal = lazy(() => import('./EventModal'));
             </h1>
             <p>Technical Club is where circuits meet curiosity. Robotics, code, CAD, and questionable 3am prototypes — three blades, one thrust, zero boring meetings.</p>
             <div className="hero-ctas">
-              <a href="#join" className="btn">Join the Club →</a>
+              <a href="https://www.instagram.com/technicalclubrbu?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" className="btn" target="_blank" rel="noopener noreferrer">Follow the Club →</a>
               <a href="#events" className="btn ghost">See Upcoming Builds</a>
             </div>
           </div>
@@ -716,14 +717,13 @@ const EventModal = lazy(() => import('./EventModal'));
         <Reveal className="team-grid">
           {team.map((t) => (
             <div className="team-card" key={t.i}>
-              <div
-                className="avatar"
-                style={{ backgroundImage: `url(valiki.png)` , backgroundSize: 'contain',
-  backgroundPosition: 'center'  }}
-              >
-                <span>{t.i}</span>
+              <div className="avatar avatar--placeholder">
+                <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className="avatar-icon">
+                  <circle cx="32" cy="22" r="12" fill="rgba(63,169,245,0.18)" stroke="rgba(63,169,245,0.5)" strokeWidth="2"/>
+                  <path d="M8 56c0-13.255 10.745-24 24-24s24 10.745 24 24" fill="rgba(63,169,245,0.12)" stroke="rgba(63,169,245,0.5)" strokeWidth="2" strokeLinecap="round"/>
+                </svg>
               </div>
-              <h4>{t.name}</h4>
+              <h4 className="reveal-soon-text">reveal soon...</h4>
               <div className="role">{t.role}</div>
             </div>
           ))}
@@ -735,7 +735,7 @@ const EventModal = lazy(() => import('./EventModal'));
           <div className="eyebrow mono" style={{ justifyContent: "center" }}>No experience required</div>
           <h2>Come spin something up with us</h2>
           <p>Bring curiosity, we'll supply the solder, the snacks, and the slightly-too-loud music. Meetings every Thursday, 6 PM, Workshop Bay.</p>
-          <a href="#" className="btn" onClick={handleJoinClick}>Grab a Membership Card</a>
+          <a href="https://www.instagram.com/technicalclubrbu?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" className="btn" target="_blank" rel="noopener noreferrer">Follow Us on Instagram →</a>
         </Reveal>
       </section>
 

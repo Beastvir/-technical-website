@@ -301,6 +301,7 @@ class Media {
     this.plane.setParent(this.scene);
   }
   createTitle() {
+    if (!this.text || !this.text.trim()) return;
     this.title = new Title({
       gl: this.gl,
       plane: this.plane,

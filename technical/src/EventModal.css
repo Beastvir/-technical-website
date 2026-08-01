@@ -170,7 +170,7 @@
 
 /* Bottom Content */
 .event-modal-content {
-  padding: 28px 32px 36px;
+  padding: 48px 32px 36px;
   display: flex;
   flex-direction: column;
   gap: 16px;

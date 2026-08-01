@@ -203,8 +203,24 @@
           display:flex; align-items:center; justify-content:center; transition:transform .4s ease; }
         
         .avatar span{ position:relative; font-family:'Chakra Petch'; font-weight:700; font-size:1.6rem; color:var(--paper); }
+        .avatar--placeholder{
+          background: radial-gradient(circle at 30% 30%, rgba(31,111,178,0.22), rgba(8,27,48,0.6));
+          border: 1.5px solid rgba(63,169,245,0.3);
+          box-shadow: 0 0 0 4px rgba(63,169,245,0.06), inset 0 0 24px rgba(63,169,245,0.08);
+        }
+        .avatar-icon{ width:58%; height:58%; opacity:0.75; }
         .team-card:hover .avatar{ transform:rotate(20deg) scale(1.04); }
         .team-card h4{ font-size:1.02rem; margin-bottom:2px; }
+        .reveal-soon-text{
+          font-family:'JetBrains Mono', monospace !important;
+          font-size:0.82rem !important;
+          font-weight:400 !important;
+          font-style:italic;
+          color:rgba(191,230,255,0.45) !important;
+          letter-spacing:0.06em;
+          text-transform:none !important;
+          margin-bottom:4px;
+        }
         .team-card .role{ font-family:'JetBrains Mono'; font-size:0.72rem; color:var(--amber); text-transform:uppercase; letter-spacing:0.06em; }
 
         .join{ position:relative; border-radius:26px; background:linear-gradient(135deg, var(--navy), var(--blue) 120%);
